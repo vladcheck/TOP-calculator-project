@@ -1,4 +1,5 @@
 const REPLACEMENT_TABLE = { π: Math.PI, e: Math.E, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
+let cursorPosition = -1;
 
 function evaluateReplacements(text) {
   for (let [key, value] of Object.entries(REPLACEMENT_TABLE)) {
@@ -33,14 +34,20 @@ function isThereNoUnclosedBrackets(text) {
 
 function displayCharacter(char) {
   display.textContent += char;
+  cursorPosition++;
 }
 
-function removeMathematicalCharacter() {
-  display.textContent = display.textContent.slice(0, -1);
+function removeMathematicalCharacterAtPosition() {
+  if (!isEmpty(display.textContent)) {
+    const expr = display.textContent;
+    display.textContent = expr.slice(0, cursorPosition) + expr.slice(cursorPosition + 1);
+    cursorPosition--;
+  }
 }
 
 function clearDisplay() {
   display.textContent = "";
+  cursorPosition = 0;
 }
 
 function isExpressionValid(expr) {
@@ -56,7 +63,7 @@ function evaluateExpression(expr) {
 const display = document.querySelector(".display");
 
 const backspace = document.querySelector(".backspace");
-backspace.addEventListener("click", removeMathematicalCharacter);
+backspace.addEventListener("click", removeMathematicalCharacterAtPosition);
 
 const clearAllButton = document.querySelector(".clear-all");
 clearAllButton.addEventListener("click", clearDisplay);
