@@ -35,19 +35,22 @@ function isThereNoUnclosedBrackets(text) {
 function displayCharacter(char) {
   display.textContent += char;
   cursorPosition++;
+  console.log(cursorPosition);
 }
 
 function removeMathematicalCharacterAtPosition() {
   if (!isEmpty(display.textContent)) {
     const expr = display.textContent;
     display.textContent = expr.slice(0, cursorPosition) + expr.slice(cursorPosition + 1);
-    cursorPosition--;
+    if (cursorPosition !== 0) cursorPosition--;
+    console.log(cursorPosition);
   }
 }
 
 function clearDisplay() {
   display.textContent = "";
   cursorPosition = 0;
+  console.log(cursorPosition);
 }
 
 function isExpressionValid(expr) {
@@ -59,6 +62,25 @@ function isExpressionValid(expr) {
 function evaluateExpression(expr) {
   return expr;
 }
+
+const [startButton, endButton, leftButton, rightButton] = document.querySelectorAll(".navigation button");
+startButton.addEventListener("click", () => {
+  cursorPosition = 0;
+  console.log(cursorPosition);
+});
+endButton.addEventListener("click", () => {
+  cursorPosition = display.textContent.length - 1;
+  console.log(cursorPosition);
+});
+leftButton.addEventListener("click", () => {
+  cursorPosition = cursorPosition === 0 ? 0 : cursorPosition - 1;
+  console.log(cursorPosition);
+});
+rightButton.addEventListener("click", () => {
+  const end = display.textContent ? display.textContent.length - 1 : 0;
+  cursorPosition = cursorPosition === end ? end : cursorPosition + 1;
+  console.log(end, cursorPosition);
+});
 
 const display = document.querySelector(".display");
 
@@ -74,6 +96,7 @@ evaluateButton.addEventListener("click", () => {
   if (isExpressionValid(expression)) {
     const result = evaluateExpression(expression);
     display.textContent = result;
+    // move cursor to end!
   } else alert("Expression is invalid!");
 });
 
