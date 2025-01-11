@@ -1,5 +1,26 @@
 const REPLACEMENT_TABLE = { π: Math.PI, e: Math.E, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
-let cursorPosition = -1;
+
+const cursor = {
+  position: -1,
+  isAtStart() {
+    return this.position === 0;
+  },
+  isAt(pos) {
+    return this.position === pos;
+  },
+  increment(step = 1) {
+    this.position += step;
+    console.log(this.position);
+  },
+  decrement(step = 1) {
+    this.position -= step;
+    console.log(this.position);
+  },
+  moveTo(index) {
+    this.position = index;
+    console.log(this.position);
+  },
+};
 
 function evaluateReplacements(text) {
   for (let [key, value] of Object.entries(REPLACEMENT_TABLE)) {
@@ -34,23 +55,20 @@ function isThereNoUnclosedBrackets(text) {
 
 function displayCharacter(char) {
   display.textContent += char;
-  cursorPosition++;
-  console.log(cursorPosition);
+  cursor.increment(char.length);
 }
 
 function removeMathematicalCharacterAtPosition() {
   if (!isEmpty(display.textContent)) {
     const expr = display.textContent;
-    display.textContent = expr.slice(0, cursorPosition) + expr.slice(cursorPosition + 1);
-    if (cursorPosition !== 0) cursorPosition--;
-    console.log(cursorPosition);
+    display.textContent = expr.slice(0, cursor.position) + expr.slice(cursor.position + 1);
+    if (!cursor.isAtStart()) cursor.increment();
   }
 }
 
 function clearDisplay() {
   display.textContent = "";
-  cursorPosition = 0;
-  console.log(cursorPosition);
+  cursor.moveTo(0);
 }
 
 function isExpressionValid(expr) {
@@ -65,21 +83,21 @@ function evaluateExpression(expr) {
 
 const [startButton, endButton, leftButton, rightButton] = document.querySelectorAll(".navigation button");
 startButton.addEventListener("click", () => {
-  cursorPosition = 0;
-  console.log(cursorPosition);
+  cursor.moveTo(0);
 });
 endButton.addEventListener("click", () => {
-  cursorPosition = display.textContent.length - 1;
-  console.log(cursorPosition);
+  cursor.moveTo(display.textContent.length - 1);
 });
 leftButton.addEventListener("click", () => {
-  cursorPosition = cursorPosition === 0 ? 0 : cursorPosition - 1;
-  console.log(cursorPosition);
+  if (!cursor.isAtStart()) {
+    cursor.decrement();
+  }
 });
 rightButton.addEventListener("click", () => {
   const end = display.textContent ? display.textContent.length - 1 : 0;
-  cursorPosition = cursorPosition === end ? end : cursorPosition + 1;
-  console.log(end, cursorPosition);
+  if (!cursor.isAt(end)) {
+    cursor.increment();
+  }
 });
 
 const display = document.querySelector(".display");
@@ -96,7 +114,7 @@ evaluateButton.addEventListener("click", () => {
   if (isExpressionValid(expression)) {
     const result = evaluateExpression(expression);
     display.textContent = result;
-    // move cursor to end!
+    cursor.moveTo(display.textContent.length - 1);
   } else alert("Expression is invalid!");
 });
 
