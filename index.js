@@ -9,7 +9,7 @@ class Cursor {
     display.appendChild(this.element);
   }
   render() {
-    this.element.style.left = `calc(${this.position}ch + 9px)`;
+    this.element.style.left = `calc(${this.position}ch + 10px)`;
     display.appendChild(this.element);
   }
   isAtStart() {
@@ -127,7 +127,7 @@ evaluateButton.addEventListener("click", () => {
   if (isExpressionValid(expression)) {
     const result = evaluateExpression(expression);
     display.textContent = result;
-    cursor.moveTo(display.textContent.length - 1);
+    cursor.moveTo(display.textContent.length);
   } else alert("Expression is invalid!");
 });
 
