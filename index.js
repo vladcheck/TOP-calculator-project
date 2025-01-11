@@ -6,11 +6,16 @@ function removeMathematicalCharacter() {
   display.textContent = display.textContent.slice(0, -1);
 }
 
+function clearDisplay() {
+  display.textContent = "";
+}
+
 const display = document.querySelector(".display");
 
 const backspace = document.querySelector(".backspace");
 backspace.addEventListener("click", removeMathematicalCharacter);
 const clearAllButton = document.querySelector(".clear-all");
+clearAllButton.addEventListener("click", clearDisplay);
 const evaluateButton = document.querySelector(".evaluate");
 
 const digitButtons = document.querySelectorAll(".digits > button");
