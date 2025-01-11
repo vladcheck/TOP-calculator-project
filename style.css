@@ -16,12 +16,6 @@
   padding: 10px;
 }
 
-.display {
-  width: 100%;
-  min-height: 40px;
-  border: 1px solid black;
-}
-
 section.buttons {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -40,4 +34,20 @@ button {
   aspect-ratio: 1/1;
   max-width: 40px;
   font-size: 1rem;
+}
+
+.display {
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#cursor {
+  position: absolute;
+  width: 2px;
+  background-color: black;
+  height: 1rem;
+  top: 11px;
 }

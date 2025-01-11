@@ -1,26 +1,41 @@
+const display = document.querySelector(".display");
 const REPLACEMENT_TABLE = { π: Math.PI, e: Math.E, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
 
-const cursor = {
-  position: -1,
+class Cursor {
+  constructor(display) {
+    this.position = 0;
+    this.element = document.createElement("div");
+    this.element.id = "cursor";
+    display.appendChild(this.element);
+  }
+  render() {
+    this.element.style.left = `calc(${this.position}ch + 9px)`;
+    display.appendChild(this.element);
+  }
   isAtStart() {
     return this.position === 0;
-  },
+  }
   isAt(pos) {
     return this.position === pos;
-  },
+  }
   increment(step = 1) {
     this.position += step;
+    this.render();
     console.log(this.position);
-  },
+  }
   decrement(step = 1) {
     this.position -= step;
+    this.render();
     console.log(this.position);
-  },
+  }
   moveTo(index) {
     this.position = index;
+    this.render();
     console.log(this.position);
-  },
-};
+  }
+}
+
+const cursor = new Cursor(display);
 
 function evaluateReplacements(text) {
   for (let [key, value] of Object.entries(REPLACEMENT_TABLE)) {
@@ -59,10 +74,10 @@ function displayCharacter(char) {
 }
 
 function removeMathematicalCharacterAtPosition() {
-  if (!isEmpty(display.textContent)) {
+  if (!isEmpty(display.textContent) && !cursor.isAtStart()) {
     const expr = display.textContent;
-    display.textContent = expr.slice(0, cursor.position) + expr.slice(cursor.position + 1);
-    if (!cursor.isAtStart()) cursor.increment();
+    display.textContent = expr.slice(0, cursor.position - 1) + expr.slice(cursor.position);
+    if (!cursor.isAtStart()) cursor.decrement();
   }
 }
 
@@ -86,7 +101,7 @@ startButton.addEventListener("click", () => {
   cursor.moveTo(0);
 });
 endButton.addEventListener("click", () => {
-  cursor.moveTo(display.textContent.length - 1);
+  cursor.moveTo(display.textContent.length);
 });
 leftButton.addEventListener("click", () => {
   if (!cursor.isAtStart()) {
@@ -94,13 +109,11 @@ leftButton.addEventListener("click", () => {
   }
 });
 rightButton.addEventListener("click", () => {
-  const end = display.textContent ? display.textContent.length - 1 : 0;
+  const end = display.textContent.length ? display.textContent.length : 0;
   if (!cursor.isAt(end)) {
     cursor.increment();
   }
 });
-
-const display = document.querySelector(".display");
 
 const backspace = document.querySelector(".backspace");
 backspace.addEventListener("click", removeMathematicalCharacterAtPosition);
