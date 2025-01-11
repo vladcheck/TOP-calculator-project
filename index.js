@@ -1,4 +1,4 @@
-const REPLACEMENT_TABLE = { π: Math.PI, e: Math.e, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
+const REPLACEMENT_TABLE = { π: Math.PI, e: Math.E, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
 
 function evaluateReplacements(text) {
   for (let [key, value] of Object.entries(REPLACEMENT_TABLE)) {
@@ -20,7 +20,7 @@ function isEmpty(text) {
 }
 
 function isThereNoLeftoverBinaryOperators(text) {
-  return !text.match(/[\+\-\\\*]$/);
+  return !text.match(/^[\+\-\\\*\.]|[\+\-\\\*\.]$/);
 }
 
 function isThereNoRepeatingOperandsInRow(text) {
@@ -50,7 +50,6 @@ function isExpressionValid(expr) {
 }
 
 function evaluateExpression(expr) {
-  expr = evaluateReplacements(expr);
   return expr;
 }
 
@@ -64,7 +63,7 @@ clearAllButton.addEventListener("click", clearDisplay);
 
 const evaluateButton = document.querySelector(".evaluate");
 evaluateButton.addEventListener("click", () => {
-  const expression = display.textContent;
+  const expression = evaluateReplacements(display.textContent);
   if (isExpressionValid(expression)) {
     const result = evaluateExpression(expression);
     display.textContent = result;
