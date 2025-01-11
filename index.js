@@ -1,5 +1,5 @@
-function displayCharacter(char, charReplacement) {
-  display.textContent += !charReplacement ? char : charReplacement;
+function displayCharacter(char) {
+  display.textContent += char;
 }
 
 const display = document.querySelector(".display");
@@ -14,11 +14,11 @@ digitButtons.forEach((button) =>
 );
 binaryOperatorsButtons.forEach((button) =>
   button.addEventListener("click", (e) => {
-    displayCharacter(e.target.textContent, e.target.getAttribute("replacement"));
+    displayCharacter(e.target.textContent);
   })
 );
 constantButtons.forEach((button) =>
   button.addEventListener("click", (e) => {
-    displayCharacter(e.target.textContent, e.target.getAttribute("replacement"));
+    displayCharacter(e.target.textContent);
   })
 );
