@@ -40,13 +40,24 @@ function isExpressionValid(expr) {
   );
 }
 
+function evaluateExpression(expr) {}
+
 const display = document.querySelector(".display");
 
 const backspace = document.querySelector(".backspace");
 backspace.addEventListener("click", removeMathematicalCharacter);
+
 const clearAllButton = document.querySelector(".clear-all");
 clearAllButton.addEventListener("click", clearDisplay);
+
 const evaluateButton = document.querySelector(".evaluate");
+evaluateButton.addEventListener("click", () => {
+  const expression = display.textContent;
+  if (isExpressionValid(expression)) {
+    const result = evaluateExpression(expression);
+    display.textContent = result;
+  } else alert("Expression is invalid!");
+});
 
 const digitButtons = document.querySelectorAll(".digits > button");
 const binaryOperatorsButtons = document.querySelectorAll(".binary-operators button");
