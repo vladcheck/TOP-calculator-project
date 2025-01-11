@@ -34,6 +34,12 @@ function clearDisplay() {
   display.textContent = "";
 }
 
+function isExpressionValid(expr) {
+  return (
+    isThereNoLeftoverBinaryOperators(expr) && isThereNoUnclosedBrackets(expr) && isThereNoRepeatingOperandsInRow(expr)
+  );
+}
+
 const display = document.querySelector(".display");
 
 const backspace = document.querySelector(".backspace");
