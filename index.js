@@ -1,3 +1,27 @@
+function count(text, sample) {
+  let appearances = 0;
+  for (let char of text) {
+    appearances += char === sample;
+  }
+  return appearances;
+}
+
+function isEmpty(text) {
+  return !text;
+}
+
+function isThereNoLeftoverBinaryOperators(text) {
+  return !text.match(/[\+\-\\\*]$/);
+}
+
+function isThereNoRepeatingOperandsInRow(text) {
+  return !text.match(/[\.\+\-\\\*]{2,}/);
+}
+
+function isThereNoUnclosedBrackets(text) {
+  return count(text, "(") === count(text, ")");
+}
+
 function displayCharacter(char) {
   display.textContent += char;
 }
