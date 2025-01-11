@@ -1,3 +1,12 @@
+const REPLACEMENT_TABLE = { π: Math.PI, e: Math.e, τ: Math.PI * 2, φ: 1.618033, "÷": "/", "×": "*" };
+
+function evaluateReplacements(text) {
+  for (let [key, value] of Object.entries(REPLACEMENT_TABLE)) {
+    text = text.replaceAll(key, value);
+  }
+  return text;
+}
+
 function count(text, sample) {
   let appearances = 0;
   for (let char of text) {
@@ -40,7 +49,10 @@ function isExpressionValid(expr) {
   );
 }
 
-function evaluateExpression(expr) {}
+function evaluateExpression(expr) {
+  expr = evaluateReplacements(expr);
+  return expr;
+}
 
 const display = document.querySelector(".display");
 
